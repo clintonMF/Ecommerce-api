@@ -1,10 +1,28 @@
+const { StatusCodes } = require('http-status-codes');
 
-const getAllUsers = (req, res) => {
-    res.send("get all user");
+
+const errors = require('../errors');
+const User = require('../model/userModel');
+const {attachCookiesToResponse} = require('../utils');
+
+
+const getAllUsers = async (req, res) => {
+    const users = await User
+                        .find({where: {role: "user"}})
+                        .select('-password');
+    res.status(StatusCodes.OK).json(users);
 };
-const getSingleUser = (req, res) => {
-    res.send("get single user");
+
+const getSingleUser = async (req, res) => {
+    const user = await User
+                    .findOne({_id: req.params.id })
+                    .select('-password');
+    if (!user) {
+        throw new errors.NotFoundError(`user with id ${req.params.id} not found`)
+    }
+    res.status(StatusCodes.OK).json(user);
 };
+
 const showCurrentUser = (req, res) => {
     res.send("get current user");
 };

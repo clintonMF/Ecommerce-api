@@ -7,6 +7,7 @@ const { getAllUsers,
     updateUser,
     updateUserPassword} = require('../controllers/userController');
 
-router.route('/').post(getAllUsers);
+router.route('/').get(getAllUsers);
+router.route('/:id').get(getSingleUser);
 
 module.exports = router

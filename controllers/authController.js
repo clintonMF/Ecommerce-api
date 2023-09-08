@@ -42,10 +42,16 @@ const login = async (req, res) => {
         throw errors.UnauthenticatedError("wrong password")
     } 
 
-    res.send("login user");
+    attachCookiesToResponse({res, user});
+    res.json({user});
 };
 const logout = async (req, res) => {
-    res.send("logout user");
+    res.cookie('token', 'logout', {
+        expires: new Date(Date.now() + 60 * 1000 * 5),
+        httpOnly: true
+    });
+
+    res.status(200).json({msg: "successfully logged out"})
 };
 
 module.exports = {register, login, logout};

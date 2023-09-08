@@ -84,6 +84,11 @@
 - [] create token, setup cookie
 - [] optionally send back the response
 
+move the generateToken function to utils
+create token user for the attachcookie
+fix my user object returned by mongo
+ask what that thing that tells if youre in production or not is
+
 #### Login Route
 
 - [] check if email and password exist, if one missing return 400

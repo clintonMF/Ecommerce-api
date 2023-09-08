@@ -2,6 +2,7 @@ require('dotenv').config();
 require('express-async-errors');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const express = require('express');
 const app = express();
 
@@ -13,7 +14,8 @@ const authRouter = require('./routes/authRoutes');
 const userRouter = require('./routes/userRoutes');
 
 app.use(morgan('tiny'));
-app.use(cookieParser());
+app.use(cookieParser(process.env.JWT_SECRET));
+app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {

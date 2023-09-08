@@ -1,4 +1,4 @@
-const User = require('../model/user');
+const User = require('../model/userModel');
 const errors = require('../errors');
 const validator = require('validator'); 
 

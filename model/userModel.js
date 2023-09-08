@@ -49,7 +49,7 @@ userSchema.methods.generateToken = async function() {
         {expiresIn: process.env.JWT_LIFETIME} 
         );
 
-    return token
+    return token;
 }
 
 module.exports = mongoose.model('User', userSchema);

@@ -9,6 +9,7 @@ const connectDB = require('./db/connect');
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 const authRouter = require('./routes/authRoutes');
+const userRouter = require('./routes/userRoutes');
 
 app.use(morgan('tiny'));
 app.use(express.json());
@@ -18,9 +19,10 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/users', userRouter);
 
-app.use(errorHandlerMiddleware);
 app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 port = process.env.PORT || 5000;
 const starter = async () => {

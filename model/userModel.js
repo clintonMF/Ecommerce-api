@@ -13,15 +13,20 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true, 'email is required'],
         unique: true,
-        // validate: {
-        //     validator: validator.isEmail(),
-        //     message: props => `${props.value} is not a valid email`
-        // }
+        validate: {
+            validator: validator.isEmail,
+            message: props => `${props.value} is not a valid email`
+        }
     },
     password: {
         type: String,
         required: [true, 'password is required'],
         minlength: 6
+    },
+    role: {
+        type: String,
+        enum: ["admin", "user"],
+        default: 'user'
     },
 });
 
@@ -38,8 +43,8 @@ userSchema.statics.emailExist = async function(email) {
 };
 
 userSchema.methods.comparePassword = async function(password) {
-    const v = await bcrypt.compare(password, this.password); 
-    return v
+    const isMatch = await bcrypt.compare(password, this.password); 
+    return isMatch
 };
 
 userSchema.methods.generateToken = async function() {

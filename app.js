@@ -1,9 +1,10 @@
 require('dotenv').config();
 require('express-async-errors');
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 const express = require('express');
 const app = express();
 
-const morgan = require('morgan');
 
 const connectDB = require('./db/connect');
 const notFoundMiddleware = require('./middleware/not-found');
@@ -12,6 +13,7 @@ const authRouter = require('./routes/authRoutes');
 const userRouter = require('./routes/userRoutes');
 
 app.use(morgan('tiny'));
+app.use(cookieParser());
 app.use(express.json());
 
 app.get('/', (req, res) => {

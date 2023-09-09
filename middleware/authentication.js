@@ -3,7 +3,6 @@ const {validateJWT} = require('../utils');
 
 const authenticateUser = async (req, res, next) => {
     const token = req.signedCookies.token;
-    console.log(req.signedCookies);
 
     if (!token) {
         throw new errors.UnauthenticatedError("Invalid token");
@@ -22,7 +21,8 @@ const authenticateUser = async (req, res, next) => {
 const authorizePermission = ( ...roles ) => {
     return (req, res, next ) => {
         if (!roles.includes(req.user.role)) {
-            throw new errors.UnauthorizedError("You are not authorized to perform this action");
+            throw new errors.UnauthorizedError(
+                "You are not authorized to perform this action");
         };
         console.log("you have permission");
         next();

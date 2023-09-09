@@ -11,6 +11,7 @@ const { getAllUsers,
 
 
 router.route('/').get(authenticateUser, authorizePermission("admin"), getAllUsers);
+router.route('/showMe').get(authenticateUser, showCurrentUser);
 router.route('/:id').get(authenticateUser, getSingleUser);
 
 module.exports = router

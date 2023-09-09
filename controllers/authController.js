@@ -15,6 +15,7 @@ const register = async (req, res) => {
     const isFirstUser = await User.countDocuments({}) === 0;
 
     const role = isFirstUser ? "admin": "user";
+    // const role = "admin";
     if (emailExist) {
         throw new errors.BadRequestError(
             `user with email ${email} already exist`
@@ -41,7 +42,7 @@ const login = async (req, res) => {
         throw new errors.UnauthenticatedError("wrong password")
     } 
 
-    const tokenUser = {userID: user._id, name, email, role};
+    const tokenUser = {userID: user._id, email, name: user.name, role:user.role};
     attachCookiesToResponse({res, user: tokenUser});
     res.status(StatusCodes.OK).json({user: tokenUser});
 };

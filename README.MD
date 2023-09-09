@@ -84,11 +84,6 @@
 - [] create token, setup cookie
 - [] optionally send back the response
 
-move the generateToken function to utils
-create token user for the attachcookie
-fix my user object returned by mongo
-ask what that thing that tells if youre in production or not is
-
 #### Login Route
 
 - [] check if email and password exist, if one missing return 400
@@ -130,6 +125,7 @@ ask what that thing that tells if youre in production or not is
 #### Authorize Permissions Complete
 
 - [] introduce params
+learn why we had to refactor authorizePermission from chat gpt
 
 #### ShowCurrentUser
 

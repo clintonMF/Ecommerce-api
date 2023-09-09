@@ -32,6 +32,7 @@ const userSchema = mongoose.Schema({
 
 
 userSchema.pre('save', async function(next) {
+    if (!this.isModified('password')) return 
     const salt = await bcrypt.genSaltSync(10);
     this.password = await bcrypt.hash(this.password, salt);
     next();
@@ -44,17 +45,7 @@ userSchema.statics.emailExist = async function(email) {
 
 userSchema.methods.comparePassword = async function(password) {
     const isMatch = await bcrypt.compare(password, this.password); 
-    return isMatch
+    return isMatch;
 };
-
-userSchema.methods.generateToken = async function() {
-    const token = jwt.sign(
-        {userID: this._id, name: this.name}, 
-        process.env.JWT_SECRET,
-        {expiresIn: process.env.JWT_LIFETIME} 
-        );
-
-    return token;
-}
 
 module.exports = mongoose.model('User', userSchema);

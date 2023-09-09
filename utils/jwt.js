@@ -25,7 +25,12 @@ const attachCookiesToResponse = ({res, user}) => {
     });
 };
 
+const createTokenUser = (user) => {
+    return {userID: user._id, email, name: user.name, role:user.role};
+}
+
 module.exports = {
     validateJWT,
     attachCookiesToResponse,
+    createTokenUser,
 };

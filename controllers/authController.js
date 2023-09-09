@@ -3,7 +3,7 @@ const { StatusCodes } = require('http-status-codes');
 
 const errors = require('../errors');
 const User = require('../model/userModel');
-const {attachCookiesToResponse} = require('../utils');
+const {attachCookiesToResponse, createTokenUser} = require('../utils');
 
 
 const register = async (req, res) => {
@@ -22,7 +22,7 @@ const register = async (req, res) => {
         );
     };
     const user = await User.create({name, email, password, role});
-    const tokenUser = {userID: user._id, name, email, role};
+    const tokenUser = createTokenUser(user);
     attachCookiesToResponse({res, user: tokenUser});
     res.status(StatusCodes.CREATED).json({user: tokenUser});
 };
@@ -42,7 +42,7 @@ const login = async (req, res) => {
         throw new errors.UnauthenticatedError("wrong password")
     } 
 
-    const tokenUser = {userID: user._id, email, name: user.name, role:user.role};
+    const tokenUser = createTokenUser(user);
     attachCookiesToResponse({res, user: tokenUser});
     res.status(StatusCodes.OK).json({user: tokenUser});
 };

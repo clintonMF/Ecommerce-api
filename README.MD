@@ -144,6 +144,8 @@ learn why we had to refactor authorizePermission from chat gpt
 - [] if everything good set user.password equal to newPassword
 - [] await user.save()
 
+search for an autosave file alternative extension
+
 #### createTokenUser in Utils
 
 - [] create a file in utils (createTokenUser)

@@ -13,8 +13,10 @@ const checkPermission = (requestUser, resourceUserID) => {
         "You are not authorized to access this route"
     )
 }
+
 module.exports = {
     validateJWT,
     attachCookiesToResponse,
-    createTokenUser
+    createTokenUser,
+    checkPermission
 };

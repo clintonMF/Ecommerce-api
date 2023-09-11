@@ -1,4 +1,6 @@
 const StatusCodes = require('http-status-codes');
+const cloudinary = require('cloudinary').v2;
+const fs = require('fs');
 
 const Product = require('../model/productModel');
 const errors = require('../errors');
@@ -42,7 +44,30 @@ const deleteProduct = async(req, res) => {
     res.status(StatusCodes.OK).json({product});
 };
 const uploadImage = async(req, res) => {
-    res.send('uploadImage')
+    console.log(req.files, "here");
+
+    const productImage = req.files.image
+    if (!productImage) {
+        throw new cusErr.BadRequestError("Image is required");
+    };
+
+    if (!productImage.mimetype.startsWith('image')) {
+        throw new cusErr.BadRequestError(`File type ${productImage.mimetype} not supported`);
+    };
+
+    const size = 1024 * 1024
+    if (size < productImage.size) {
+        throw new cusErr.BadRequestError(`File size should not be greater than ${size}`);
+    };
+
+    const result = await cloudinary.uploader.upload(
+        productImage.tempFilePath,
+        { use_filename: true, folder:'file-uploads'}
+    );
+
+    await fs.unlinkSync(productImage.tempFilePath);
+    res.status(StatusCodes.OK)
+        .json({ image: `${result.secure_url}` });
 };
 
 module.exports = {

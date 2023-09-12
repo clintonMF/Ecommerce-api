@@ -20,11 +20,11 @@ const authenticateUser = async (req, res, next) => {
 
 const authorizePermission = ( ...roles ) => {
     return (req, res, next ) => {
+        console.log(roles)
         if (!roles.includes(req.user.role)) {
             throw new errors.UnauthorizedError(
                 "You are not authorized to perform this action");
         };
-        console.log("you have permission");
         next();
     }
 }

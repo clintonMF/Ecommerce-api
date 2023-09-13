@@ -7,7 +7,6 @@ const errors = require('../errors');
 
 const createProduct = async (req, res) => {
     req.body.user = req.user.userID;
-    console.log(req.body.user);
     const product = await Product.create(req.body);
     res.status(StatusCodes.CREATED).json(product);
 };
@@ -38,15 +37,15 @@ const updateProduct = async(req, res) => {
     res.status(StatusCodes.OK).json({product});
 };
 const deleteProduct = async(req, res) => {
-    const product = await Product.findOneAndDelete({_id: req.params.id});
+    const product = await Product.findOne({_id: req.params.id});
     if (!product) {
         throw new errors.NotFoundError(`No product with id ${req.params.id}`);
     };
-    res.status(StatusCodes.OK).json({product});
+    await product.remove();
+    res.status(StatusCodes.OK).json({msg:"success, product deleted"});
 };
-const uploadImage = async(req, res) => {
-    console.log(req.files, "here");
 
+const uploadImage = async(req, res) => {
     const productImage = req.files.image
     if (!productImage) {
         throw new cusErr.BadRequestError("Image is required");
@@ -67,6 +66,7 @@ const uploadImage = async(req, res) => {
     );
 
     await fs.unlinkSync(productImage.tempFilePath);
+
     res.status(StatusCodes.OK)
         .json({ image: `${result.secure_url}` });
 };

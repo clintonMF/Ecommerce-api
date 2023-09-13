@@ -14,20 +14,18 @@ const authenticateUser = async (req, res, next) => {
         next();
     } catch (error) {
         throw new errors.UnauthenticatedError("Invalid token");
-    }
-
+    };
 };
 
 const authorizePermission = ( ...roles ) => {
     return (req, res, next ) => {
-        console.log(roles)
         if (!roles.includes(req.user.role)) {
             throw new errors.UnauthorizedError(
                 "You are not authorized to perform this action");
         };
         next();
-    }
-}
+    };
+};
 
 module.exports = { 
     authenticateUser,

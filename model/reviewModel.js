@@ -10,14 +10,13 @@ const reviewSchema = new mongoose.Schema({
     rating: { 
         type: Number, 
         required: [true, 'rating is required'],
-        default: 0,
+        min: 1,
+        max: 5,
     },
     comment: { 
         type: String, 
         // required: [true, 'comment is required'],
         required: false,
-        maxLength: 
-            [1000, 'review comment cannot have more than 1000 characters']
     },
     user: { 
         type: mongoose.Schema.Types.ObjectId, 
@@ -33,6 +32,18 @@ const reviewSchema = new mongoose.Schema({
     timestamps: true, 
     toJSON: { virtuals: true }, 
     toObject: { virtuals: true }
+});
+
+reviewSchema.statics.calculateAverageRating = async (productID) => {
+    console.log(productID)
+};
+
+reviewSchema.post('save', async function(){
+    await this.constructor.calculateAverageRating(this.product)
+});
+
+reviewSchema.post('remove', async function(){
+    await this.constructor.calculateAverageRating(this.product)
 });
 
 module.exports =  mongoose.model('Review', reviewSchema);

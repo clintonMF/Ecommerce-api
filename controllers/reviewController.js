@@ -10,7 +10,7 @@ const createReview = async (req, res) => {
     const product = await Product.findOne({ _id: req.body.product });
     if (!product) {
         throw new errors.NotFoundError(
-            "Product with id ${productID} does not exist");
+            `Product with id ${req.body.product} does not exist`);
     };
 
     req.body.user = req.user.userID;
@@ -71,7 +71,6 @@ const deleteReview = async (req, res) => {
 
 const getSingleProductReviews = async (req, res) => {
     const reviews = await Review.find({ product: req.params.id });
-    console.log(reviews.length);
     res.status(StatusCodes.OK).json({reviews, count: reviews.length});
 }
 

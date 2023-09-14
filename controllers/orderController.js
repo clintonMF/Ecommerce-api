@@ -66,13 +66,24 @@ const createOrder = async (req, res) => {
 };
 
 const getAllOrders = async (req, res) => {
-    res.send("getAllOrders");
+    const orders = await Order.find({})
+    res.status(StatusCodes.OK).json({orders, count:orders.length});
 };
 const getSingleOrder = async (req, res) => {
-    res.send("getSingleOrder")
+    const order = await Order.findOne({_id:req.params.id});
+
+    if (!order) {
+        throw new errors.NotFoundError(
+            "Order not found"
+        );
+    };
+
+    checkPermission(req.user, order.user);
+    res.status(StatusCodes.OK).json({order});
 };
 const getCurrentUserOrders = async (req, res) => {
-    res.send("getCurrentUserOrders")
+    const orders = await Order.find({user:req.user.userID});
+    res.status(StatusCodes.OK).json({orders, count:orders.length});
 };
 const updateOrder = async (req, res) => {
     res.send("updateOrder")

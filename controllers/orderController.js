@@ -79,6 +79,7 @@ const getSingleOrder = async (req, res) => {
     };
 
     checkPermission(req.user, order.user);
+
     res.status(StatusCodes.OK).json({order});
 };
 const getCurrentUserOrders = async (req, res) => {
@@ -86,7 +87,19 @@ const getCurrentUserOrders = async (req, res) => {
     res.status(StatusCodes.OK).json({orders, count:orders.length});
 };
 const updateOrder = async (req, res) => {
-    res.send("updateOrder")
+    const paymentIntent = "clinton is here"
+    const order = await Order.findOne({_id:req.params.id});
+
+    if (!order) {
+        throw new errors.NotFoundError(
+            "Order not found"
+        );
+    }; 
+
+    checkPermission(req.user, order.user);
+    order.paymentIntent = paymentIntent;
+    order.status = 'paid';
+    await order.save(); 
 };
 
 

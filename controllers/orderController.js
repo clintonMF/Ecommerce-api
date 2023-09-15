@@ -87,7 +87,6 @@ const getCurrentUserOrders = async (req, res) => {
     res.status(StatusCodes.OK).json({orders, count:orders.length});
 };
 const updateOrder = async (req, res) => {
-    const paymentIntent = "clinton is here"
     const order = await Order.findOne({_id:req.params.id});
 
     if (!order) {
@@ -95,11 +94,14 @@ const updateOrder = async (req, res) => {
             "Order not found"
         );
     }; 
-
+    
     checkPermission(req.user, order.user);
-    order.paymentIntent = paymentIntent;
+    console.log(req.body)
+    order.paymentId = req.body.paymentId
     order.status = 'paid';
     await order.save(); 
+    res.status(StatusCodes.OK)
+        .json({msg:"order completed"});
 };
 
 

@@ -15,7 +15,6 @@ const reviewSchema = new mongoose.Schema({
     },
     comment: { 
         type: String, 
-        // required: [true, 'comment is required'],
         required: false,
     },
     user: { 

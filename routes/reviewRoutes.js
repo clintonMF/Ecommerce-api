@@ -4,7 +4,6 @@ const router = express.Router();
 
 const { 
     authenticateUser, 
-    authorizePermission 
 } = require('../middleware/authentication');
 const {    
     createReview, 
